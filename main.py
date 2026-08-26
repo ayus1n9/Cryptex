@@ -18,6 +18,7 @@ def main():
         print(f"MD5 Hash: {md5_hash}")
         print(f"SHA256 Hash: {sha256_hash}")
 
+        print("\n")
         print("=" * 50)
         print("SYMMETRIC ENCRYPTION")
         print("=" * 50)
@@ -25,11 +26,13 @@ def main():
         print(f"Encrypted Text: {encrypted_text.decode()}")
         print(f"Decrypted Text: {decrypted_text}")
 
+        print("\n")
         key_size, rsa_encrypted, rsa_decrypted = demonstrate_asymmetric_encryption(text)
         print("=" * 50)
         print("ASYMMETRIC ENCRYPTION (RSA - Two-Key)")
         print("=" * 50)
-        print(f"Encrypted:  {rsa_encrypted}")
+        print(f"Encrypted(raw bytes):  {rsa_encrypted}")
+        print(f"Encrypted:  {rsa_encrypted.hex()[:64]}")
         print(f"Decrypted:  {rsa_decrypted}")
         print(f"Match:      {rsa_decrypted == text}")
         print(f"RSA Key Size: {key_size} bits")
@@ -38,4 +41,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
