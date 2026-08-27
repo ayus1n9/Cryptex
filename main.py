@@ -4,7 +4,8 @@ from crypto import (
     demonstrate_symmetric_encryption,
     demonstrate_asymmetric_encryption,
     demonstrate_password_hashing,
-    demonstrate_hmac
+    demonstrate_hmac,
+    demonstrate_digital_signature
 )
 
 def main():
@@ -71,6 +72,15 @@ def main():
         print(f"HMAC: {generated_hmac}")
         print(f"Verify with correct key: {valid_check}")
         print(f"Verify with wrong key:   {invalid_check}")
+
+        print("\n")
+        signature, valid, tampered = demonstrate_digital_signature(text)
+        print("=" * 50)
+        print("DIGITAL SIGNATURES (Non-Repudiation)")
+        print("=" * 50)
+        print(f"Signature:       {signature.hex()[:64]}")
+        print(f"Verify original: {valid}")
+        print(f"Verify tampered: {tampered}")
 
     display_results(get_user_input())
 
