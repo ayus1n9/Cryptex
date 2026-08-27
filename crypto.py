@@ -1,4 +1,5 @@
 import hashlib
+import bcrypt
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
@@ -62,3 +63,21 @@ def demonstrate_asymmetric_encryption(text):
     encrypted = rsa_encrypt(text, pub_key)
     decrypted = rsa_decrypt(encrypted, priv_key)
     return priv_key.key_size, encrypted, decrypted
+
+def demonstrate_password_hashing(password):
+    def hash_password_bcrypt(password):
+        pswd = password.encode('utf-8')
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(pswd, salt)
+        return hashed
+
+    def verify_password_bcrypt(password, hashed):
+        encoded = password.encode('utf-8')
+        hash = bcrypt.checkpw(encoded, hashed)
+        return hash
+
+    hash1 = hash_password_bcrypt(password)
+    hash2 = hash_password_bcrypt(password)
+    is_match_correct = verify_password_bcrypt(password, hash1)
+    is_match_wrong = verify_password_bcrypt("wrong_password", hash1)
+    return (hash1.decode(), hash2.decode(), is_match_correct, is_match_wrong)
