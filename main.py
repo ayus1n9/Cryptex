@@ -1,7 +1,9 @@
+import hashlib
 from crypto import (
     demonstrate_hashing,
     demonstrate_symmetric_encryption,
-    demonstrate_asymmetric_encryption
+    demonstrate_asymmetric_encryption,
+    demonstrate_password_hashing
 )
 
 def main():
@@ -36,6 +38,27 @@ def main():
         print(f"Decrypted:  {rsa_decrypted}")
         print(f"Match:      {rsa_decrypted == text}")
         print(f"RSA Key Size: {key_size} bits")
+
+        print("\n")
+        print("=" * 50)
+        print("WHY MD5 FAILS FOR PASSWORDS")
+        print("=" * 50)
+        md5_1 = hashlib.md5(text.encode()).hexdigest()
+        md5_2 = hashlib.md5(text.encode()).hexdigest()
+        print(f"MD5('{text}'): {md5_1}")
+        print(f"MD5('{text}'): {md5_2}")
+        print(f"Identical?:    {md5_1 == md5_2}  ← Attackers can pre-compute this!")
+
+        print("\n")
+        hash1, hash2, is_correct, is_wrong = demonstrate_password_hashing(text)
+        print("=" * 50)
+        print("PASSWORD HASHING (bcrypt - Salted)")
+        print("=" * 50)
+        print(f"Hash 1:     {hash1}")
+        print(f"Hash 2:     {hash2}")
+        print(f"Identical?: {hash1 == hash2}")
+        print(f"Verify correct: {is_correct}")
+        print(f"Verify wrong:   {is_wrong}")
 
     display_results(get_user_input())
 
