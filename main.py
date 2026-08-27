@@ -3,7 +3,8 @@ from crypto import (
     demonstrate_hashing,
     demonstrate_symmetric_encryption,
     demonstrate_asymmetric_encryption,
-    demonstrate_password_hashing
+    demonstrate_password_hashing,
+    demonstrate_hmac
 )
 
 def main():
@@ -59,6 +60,17 @@ def main():
         print(f"Identical?: {hash1 == hash2}")
         print(f"Verify correct: {is_correct}")
         print(f"Verify wrong:   {is_wrong}")
+
+        print("\n")
+        generated_hmac, valid_check, invalid_check, my_key = demonstrate_hmac(text)
+        print("=" * 50)
+        print("HMAC (Integrity + Authenticity)")
+        print("=" * 50)
+        print(f"Message:     {text}")
+        print(f"Secret Key:     {my_key}")
+        print(f"HMAC: {generated_hmac}")
+        print(f"Verify with correct key: {valid_check}")
+        print(f"Verify with wrong key:   {invalid_check}")
 
     display_results(get_user_input())
 
