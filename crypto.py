@@ -1,4 +1,4 @@
-import hashlib
+import hashlib, hmac
 import bcrypt
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
@@ -81,3 +81,22 @@ def demonstrate_password_hashing(password):
     is_match_correct = verify_password_bcrypt(password, hash1)
     is_match_wrong = verify_password_bcrypt("wrong_password", hash1)
     return (hash1.decode(), hash2.decode(), is_match_correct, is_match_wrong)
+
+def demonstrate_hmac(message):
+    def generate_hmac(message, secret_key) -> str:
+        msg, key = message.encode(), secret_key.encode()
+        hmac_val = hmac.new(key, msg, hashlib.sha256)
+        hmac_str = hmac_val.hexdigest()
+        return hmac_str
+
+    def verify_hmac(message, secret_key, hmac_str) -> bool:
+        hmac_nval = hmac.new(secret_key.encode(), message.encode(), hashlib.sha256).hexdigest()
+        cmpr = hmac.compare_digest(hmac_nval, hmac_str)
+        return cmpr
+
+    my_key = "my_secret_key"
+    generated_hmac = generate_hmac(message, my_key)
+    valid_check, invalid_check = verify_hmac(message, my_key, generated_hmac), verify_hmac(message, "wrong_key", generated_hmac)
+    return generated_hmac, valid_check, invalid_check, my_key
+
+
