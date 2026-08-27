@@ -3,6 +3,7 @@ import bcrypt
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
+from cryptography.exceptions import InvalidSignature
 
 def demonstrate_hashing(text):
         def hash_md5(val):
@@ -30,11 +31,12 @@ def demonstrate_symmetric_encryption(text):
     decrypted = decrypt_message(key, encrypted)
     return key, encrypted, decrypted
 
-def demonstrate_asymmetric_encryption(text):
-    def generate_rsa_keypair():
+def generate_rsa_keypair():
         private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         public_key = private_key.public_key()
         return private_key, public_key
+
+def demonstrate_asymmetric_encryption(text):
 
     def rsa_encrypt(plain_text, public_key):
         plain_text = plain_text.encode()
@@ -99,4 +101,37 @@ def demonstrate_hmac(message):
     valid_check, invalid_check = verify_hmac(message, my_key, generated_hmac), verify_hmac(message, "wrong_key", generated_hmac)
     return generated_hmac, valid_check, invalid_check, my_key
 
+def demonstrate_digital_signature(message: str):
+    def sign_message(message: str, private_key) -> bytes:
+        hashed = hashlib.sha256(message.encode()).digest()
+        signed = private_key.sign(
+            hashed,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+        return signed
 
+    def verify_signature(message: str, signed: bytes, public_key) -> bool:
+        hashed = hashlib.sha256(message.encode()).digest()
+        try:
+            public_key.verify(
+                signed,
+                hashed,
+                padding.PSS(
+                    mgf=padding.MGF1(hashes.SHA256()),
+                    salt_length=padding.PSS.MAX_LENGTH
+                ),
+                hashes.SHA256()
+            )
+            return True
+        except InvalidSignature:
+            return False
+
+    priv_key, pub_key = generate_rsa_keypair()
+    signature = sign_message(message, priv_key)
+    valid_verify = verify_signature(message, signature, pub_key)
+    tampered_verify = verify_signature(message+"!", signature, pub_key)
+    return signature, valid_verify, tampered_verify
