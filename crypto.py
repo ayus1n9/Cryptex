@@ -135,3 +135,18 @@ def demonstrate_digital_signature(message: str):
     valid_verify = verify_signature(message, signature, pub_key)
     tampered_verify = verify_signature(message+"!", signature, pub_key)
     return signature, valid_verify, tampered_verify
+
+def hash_file(filepath: str, algorithm: str) -> str:
+    if algorithm == "sha256":
+        hashed = hashlib.sha256()
+    elif algorithm == "md5":
+        hashed = hashlib.md5()
+    else:
+        raise ValueError("Unsupported algorithm")
+    with open(f"{filepath}","rb") as file:
+        while True:
+            data = file.read(4096)
+            if not data:
+                break
+            hashed.update(data)
+    return hashed.hexdigest()
