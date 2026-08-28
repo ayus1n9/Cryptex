@@ -150,3 +150,12 @@ def hash_file(filepath: str, algorithm: str) -> str:
                 break
             hashed.update(data)
     return hashed.hexdigest()
+
+def encrypt_file(input_path: str, output_path: str, key: bytes):
+    fernet_key = Fernet(key)
+    with open(f"{input_path}", "rb") as file:
+        data = file.read()
+        data_encrypt = fernet_key.encrypt(data)
+    with open(f"{output_path}", "wb") as n_file:
+        write = n_file.write(data_encrypt)
+    return write, data_encrypt
