@@ -1,3 +1,5 @@
+import os
+import json
 import hashlib, hmac
 import bcrypt
 from cryptography.fernet import Fernet
@@ -168,3 +170,16 @@ def decrypt_file(input_path: str, output_path: str, key: bytes):
     with open(f"{output_path}", "wb") as n_file:
         write = n_file.write(data_decrypt)
     return write, data_decrypt
+
+def batch_hash_folder(folder_path: str) -> dict:
+    results = {}
+    for filename in os.listdir(folder_path):
+        full_path = os.path.join(folder_path, filename)
+        try:
+            if os.path.isfile(full_path):
+                results[filename] = hash_file(full_path, "sha256")
+        except (FileNotFoundError, PermissionError):
+            pass
+    with open('hashes.json', 'w') as f:
+        json.dump(results, f, indent=2)
+    return results
