@@ -121,84 +121,87 @@ def menu():
 
 def interactive_mode():
     """Run the interactive menu loop."""
-    while True:
-        menu()
-        choice = input("Select an option (1-7): ").strip()
+    try:
+        while True:
+            menu()
+            choice = input("Select an option (1-7): ").strip()
 
-        if choice == "1":
-            text = input("\nEnter text to hash/encrypt: ")
-            display_text_demos(text)
+            if choice == "1":
+                text = input("\nEnter text to hash/encrypt: ")
+                display_text_demos(text)
 
-        elif choice == "2":
-            filepath = input("\nEnter file path: ").strip()
-            algo = input("Algorithm (md5/sha256): ").strip().lower()
-            if algo not in ("md5", "sha256"):
-                print("Invalid algorithm. Defaulting to sha256.")
-                algo = "sha256"
-            if not os.path.exists(filepath):
-                print("Error: File not found.")
-                continue
-            try:
-                result = hash_file(filepath, algo)
-                print(f"\n{algo.upper()} Hash: {result}")
-            except Exception as e:
-                print(f"Error: {e}")
+            elif choice == "2":
+                filepath = input("\nEnter file path: ").strip()
+                algo = input("Algorithm (md5/sha256): ").strip().lower()
+                if algo not in ("md5", "sha256"):
+                    print("Invalid algorithm. Defaulting to sha256.")
+                    algo = "sha256"
+                if not os.path.exists(filepath):
+                    print("Error: File not found.")
+                    continue
+                try:
+                    result = hash_file(filepath, algo)
+                    print(f"\n{algo.upper()} Hash: {result}")
+                except Exception as e:
+                    print(f"Error: {e}")
 
-        elif choice == "3":
-            input_path = input("\nEnter file to encrypt: ").strip()
-            output_path = input("Enter output file path: ").strip()
-            if not os.path.exists(input_path):
-                print("Error: File not found.")
-                continue
-            key = Fernet.generate_key()
-            try:
-                bytes_written, encrypted_data = encrypt_file(input_path, output_path, key)
-                print(f"\nEncrypted successfully.")
-                print(f"Bytes written: {bytes_written}")
-                print(f"Key (save this!): {key.decode()}")
-            except Exception as e:
-                print(f"Error: {e}")
+            elif choice == "3":
+                input_path = input("\nEnter file to encrypt: ").strip()
+                output_path = input("Enter output file path: ").strip()
+                if not os.path.exists(input_path):
+                    print("Error: File not found.")
+                    continue
+                key = Fernet.generate_key()
+                try:
+                    bytes_written, encrypted_data = encrypt_file(input_path, output_path, key)
+                    print(f"\nEncrypted successfully.")
+                    print(f"Bytes written: {bytes_written}")
+                    print(f"Key (save this!): {key.decode()}")
+                except Exception as e:
+                    print(f"Error: {e}")
 
-        elif choice == "4":
-            input_path = input("\nEnter file to decrypt: ").strip()
-            output_path = input("Enter output file path: ").strip()
-            key_str = input("Enter Fernet key: ").strip()
-            if not os.path.exists(input_path):
-                print("Error: File not found.")
-                continue
-            try:
-                key = key_str.encode()
-                bytes_written, decrypted_data = decrypt_file(input_path, output_path, key)
-                print(f"\nDecrypted successfully.")
-                print(f"Bytes written: {bytes_written}")
-            except Exception as e:
-                print(f"Error: {e}")
+            elif choice == "4":
+                input_path = input("\nEnter file to decrypt: ").strip()
+                output_path = input("Enter output file path: ").strip()
+                key_str = input("Enter Fernet key: ").strip()
+                if not os.path.exists(input_path):
+                    print("Error: File not found.")
+                    continue
+                try:
+                    key = key_str.encode()
+                    bytes_written, decrypted_data = decrypt_file(input_path, output_path, key)
+                    print(f"\nDecrypted successfully.")
+                    print(f"Bytes written: {bytes_written}")
+                except Exception as e:
+                    print(f"Error: {e}")
 
-        elif choice == "5":
-            folder = input("\nEnter folder path: ").strip()
-            if not os.path.isdir(folder):
-                print("Error: Folder not found.")
-                continue
-            try:
-                results = batch_hash_folder(folder)
-                print(f"\nHashed {len(results)} files.")
-                print("Results saved to: hashes.json")
-            except Exception as e:
-                print(f"Error: {e}")
+            elif choice == "5":
+                folder = input("\nEnter folder path: ").strip()
+                if not os.path.isdir(folder):
+                    print("Error: Folder not found.")
+                    continue
+                try:
+                    results = batch_hash_folder(folder)
+                    print(f"\nHashed {len(results)} files.")
+                    print("Results saved to: hashes.json")
+                except Exception as e:
+                    print(f"Error: {e}")
 
-        elif choice == "6":
-            iters = input("Iterations (default 100): ").strip()
-            iters = int(iters) if iters.isdigit() else 100
-            print(f"\nRunning benchmark with {iters} iterations...")
-            results = benchmark_crypto(iters)
-            print_benchmark_table(results, iters)
+            elif choice == "6":
+                iters = input("Iterations (default 100): ").strip()
+                iters = int(iters) if iters.isdigit() else 100
+                print(f"\nRunning benchmark with {iters} iterations...")
+                results = benchmark_crypto(iters)
+                print_benchmark_table(results, iters)
 
-        elif choice == "7":
-            print("\nGoodbye!")
-            break
+            elif choice == "7":
+                print("\nGoodbye!")
+                break
 
-        else:
-            print("\nInvalid option. Please choose 1-7.")
+            else:
+                print("\nInvalid option. Please choose 1-7.")
+    except KeyboardInterrupt:
+        print("\n\nInterrupted by user. Goodbye!")
 
 
 def cli_mode():
@@ -296,11 +299,15 @@ Examples:
 
 
 def main():
-    if len(sys.argv) > 1:
-        cli_mode()
-    else:
-        interactive_mode()
-
+    try:
+        if len(sys.argv) > 1:
+            cli_mode()
+        else:
+            interactive_mode()
+    except KeyboardInterrupt:
+        print("\n\nInterrupted by user. Goodbye!")
+    except EOFError:
+        print("\n\nInput closed. Goodbye!")
 
 if __name__ == "__main__":
     main()
