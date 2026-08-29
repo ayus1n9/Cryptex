@@ -1,99 +1,199 @@
-# Hashing/Encryption Demonstrator
+# Cryptex
 
-A simple Python CLI tool that demonstrates the fundamental difference between **hashing** (one-way) and **symmetric encryption** (reversible) — a core concept in cybersecurity and cryptography.
+A comprehensive Python cryptography toolkit demonstrating fundamental security concepts through hands-on implementations. Built as a progressive, week-long educational project covering hashing, encryption, password security, digital signatures, and file operations.
+
+---
+
+## Overview
+
+**Cryptex** is a CLI-based cryptography laboratory that bridges the gap between theory and practice. It demonstrates the critical differences between:
+
+- **Hashing** (one-way) vs. **Encryption** (reversible)
+- **Symmetric** (single key) vs. **Asymmetric** (public/private key pair) encryption
+- **Fast hashes** (MD5/SHA-256) vs. **Password hashes** (bcrypt with salts)
+- **Integrity** (HMAC) vs. **Authenticity + Non-repudiation** (Digital Signatures)
 
 ---
 
 ## Features
 
-- **Hashing Demo**: Computes MD5 and SHA-256 hashes of any input string
-- **Symmetric Encryption Demo**: Encrypts and decrypts text using Fernet (AES-128 in CBC mode via `cryptography` library)
-- **Educational Output**: Clearly labeled sections showing the difference between one-way hashing and reversible encryption
-- **Round-Trip Verification**: Proves decrypted text matches the original input
+### Hashing & Symmetric Encryption
+- Compute **MD5** and **SHA-256** hashes of any text
+- **Fernet symmetric encryption/decryption** with auto-generated keys
+- Side-by-side comparison showing one-way hashing vs. reversible encryption
+
+### Asymmetric Encryption (RSA)
+- **RSA-2048 key pair** generation
+- Encrypt with **public key**, decrypt with **private key**
+- **OAEP padding** demonstration (randomized encryption)
+- Direct comparison with symmetric encryption
+
+### Password Hashing
+- **bcrypt** password hashing with automatic salt generation
+- Demonstrates why identical passwords produce **different hashes**
+- Verification with correct and incorrect passwords
+- Educational comparison: **MD5 vs. bcrypt** for password storage
+
+### HMAC & Digital Signatures
+- **HMAC-SHA256** generation and verification with secret keys
+- **Timing-safe comparison** using `hmac.compare_digest()`
+- **RSA digital signatures** with PSS padding
+- **Tamper detection**: verify original message vs. modified message
+
+### File Operations
+- **Memory-efficient file hashing** (chunked reading for large files)
+- **File encryption/decryption** using Fernet
+- **Batch folder hashing** with JSON export
+- Handles edge cases: empty files, permission errors, missing files
+
+### CLI & Performance Benchmarking *(Coming Soon)*
+- Full `argparse` interface for non-interactive usage
+- Performance benchmarking: MD5 vs. SHA-256 vs. bcrypt vs. RSA vs. Fernet
+- Timing comparisons across thousands of iterations
+
+### GUI & Testing *(Coming Soon)*
+- Tkinter graphical interface
+- Comprehensive unit tests (`pytest`)
+- GitHub Actions CI/CD pipeline
 
 ---
 
-## Prerequisites
+## Tech Stack
 
-- Python 3.7+
-- `cryptography` library
+| Library | Purpose |
+|---------|---------|
+| `hashlib` (built-in) | MD5, SHA-256 hashing |
+| `cryptography` | Fernet (AES-128), RSA (OAEP/PSS), digital signatures |
+| `bcrypt` | Secure password hashing with salts |
+| `hmac` (built-in) | Message authentication codes |
+| `json` (built-in) | Batch hash export |
 
-Install the dependency:
+---
+
+## Installation
+
 ```bash
-pip install cryptography
+# Clone the repository
+git clone https://github.com/yourusername/cryptex.git
+cd cryptex
+
+# Install dependencies
+pip install cryptography bcrypt
+
+# Run the toolkit
+python main.py
 ```
 
 ---
 
 ## Usage
 
-Run the script directly:
+Launch the interactive menu:
+
 ```bash
 python main.py
 ```
 
-Then enter any text when prompted:
+### Menu Options
+
 ```
-Enter text to hash/encrypt: hello
+============================================================
+CRYPTOGRAPHY TOOLKIT
+============================================================
+1. Text Demonstrations (Hashing, Encryption, Signatures)
+2. Hash a File
+3. Encrypt a File
+4. Decrypt a File
+5. Batch Hash a Folder
+6. Exit
+============================================================
 ```
 
-### Sample Output
-```
-==================================================
-HASHING (One-Way, Deterministic)
-==================================================
-MD5 Hash:     5d41402abc4b2a76b9719d911017c592
-SHA-256 Hash: 2cf24dba5f0b30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+### Option 1: Text Demonstrations
+Enter any string to see all cryptographic operations side by side:
+- MD5 & SHA-256 hashes
+- Fernet symmetric encryption round-trip
+- RSA asymmetric encryption round-trip
+- bcrypt password hashing (showing salt randomization)
+- HMAC generation and verification
+- Digital signature creation and tamper detection
 
-==================================================
-SYMMETRIC ENCRYPTION (Reversible)
-==================================================
-Key:        gAAAAABk7...
-Encrypted:  gAAAAABk7...
-Decrypted:  hello
-Match:      True
+### Option 2: Hash a File
+```
+Enter file path: document.pdf
+Algorithm (md5/sha256): sha256
+```
+Reads files in 4096-byte chunks — memory-safe for large files.
+
+### Option 3: Encrypt a File
+```
+Enter file to encrypt: secret.txt
+Enter output file path: secret.txt.enc
+```
+Generates a Fernet key. **Save the key** — you'll need it to decrypt.
+
+### Option 4: Decrypt a File
+```
+Enter file to decrypt: secret.txt.enc
+Enter output file path: secret_decrypted.txt
+Enter Fernet key: <paste key here>
+```
+
+### Option 5: Batch Hash a Folder
+```
+Enter folder path: ./downloads
+```
+Hashes all files in the directory and exports results to `hashes.json`.
+
+---
+
+## Project Structure
+
+```
+cryptex/
+├── main.py              # CLI entry point & interactive menu
+├── crypto.py            # All cryptographic algorithm implementations
+├── hashes.json          # Generated by batch hash feature
+└── README.md
 ```
 
 ---
 
 ## Key Concepts Demonstrated
 
-| Concept | Hashing | Symmetric Encryption |
-|---------|---------|----------------------|
-| Direction | One-way (irreversible) | Two-way (reversible) |
-| Key Required | No | Yes (same key for encrypt/decrypt) |
-| Output Length | Fixed (MD5=32 chars, SHA-256=64 chars) | Variable (depends on input) |
-| Deterministic | Yes (same input → same output) | No (Fernet adds a nonce/timestamp) |
-| Use Case | Integrity checks, passwords | Data confidentiality, secure storage |
+| Concept | Demonstration | Tool/Algorithm |
+|---------|---------------|----------------|
+| One-way hashing | Same input → same output, irreversible | MD5, SHA-256 |
+| Reversible encryption | Encrypt → decrypt = original | Fernet (AES-128-CBC) |
+| Symmetric encryption | Same key for encrypt & decrypt | Fernet |
+| Asymmetric encryption | Public key encrypt, private key decrypt | RSA-2048 (OAEP) |
+| Password security | Salting prevents rainbow tables | bcrypt |
+| Message integrity | Hash + secret key = HMAC | HMAC-SHA256 |
+| Non-repudiation | Only private key holder can sign | RSA-PSS |
+| Tamper detection | Modified message fails verification | Digital signatures |
 
 ---
 
-## File Structure
+## Security Notes
 
-```
-.
-└── main.py          # Single-file CLI tool
-```
-
----
-
-## Libraries Used
-
-| Library | Purpose |
-|---------|---------|
-| `hashlib` (built-in) | MD5 and SHA-256 hashing |
-| `cryptography.fernet` | Symmetric encryption/decryption |
+- **MD5 is cryptographically broken** and included solely for educational comparison. Do not use MD5 for security purposes.
+- **RSA-2048** is the industry-standard minimum key size. Production systems may require 3072+ bits.
+- **Fernet keys** are generated per session in the demo. In production, store keys in a secure key management system (e.g., environment variables, hardware security modules).
+- **bcrypt cost factor** defaults to 12. Adjust based on your server's performance requirements.
 
 ---
 
-## Notes
+## Learning Outcomes
 
-- **MD5 is considered cryptographically broken** and should not be used for security purposes. It is included here for educational comparison only.
-- The Fernet key is generated fresh on every run. It is displayed in Base64-encoded format.
-- The encrypted output is non-deterministic: encrypting the same text twice produces different tokens due to the embedded timestamp.
+This project reinforces core concepts from:
+- **CompTIA Security+ Domain 1** (Cryptographic Concepts)
+- **CISSP** cryptography fundamentals
+- General cybersecurity education on secure coding practices
 
 ---
 
 ## License
 
-This project is for educational purposes.
+This project is for **educational purposes**.
+
+---
