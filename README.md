@@ -62,15 +62,15 @@ Built as a progressive, week-long educational project covering hashing, encrypti
 
 ## 🛠️ Tech Stack
 
-| Library | Purpose | Emoji |
-|---------|---------|-------|
-| `hashlib` (built-in) | MD5, SHA-256 hashing | 🔢 |
-| `cryptography` | Fernet (AES-128), RSA (OAEP/PSS), digital signatures | 🔐 |
-| `bcrypt` | Secure password hashing with salts | 🧂 |
-| `hmac` (built-in) | Message authentication codes | 🛡️ |
-| `tkinter` (built-in) | GUI interface | 🖥️ |
-| `unittest` (built-in) | Automated testing | 🧪 |
-| `argparse` (built-in) | Command-line interface | ⌨️ |
+| Library | Purpose |
+|---------|---------|
+| `hashlib` (built-in) | MD5, SHA-256 hashing 🔢 |
+| `cryptography` | Fernet (AES-128), RSA (OAEP/PSS), digital signatures 🔐 |
+| `bcrypt` | Secure password hashing with salts 🧂 |
+| `hmac` (built-in) | Message authentication codes 🛡️ |
+| `tkinter` (built-in) | GUI interface 🖥️ |
+| `unittest` (built-in) | Automated testing 🧪 |
+| `argparse` (built-in) | Command-line interface ⌨️ |
 
 ---
 
@@ -159,16 +159,16 @@ cryptex/
 
 ## 🎓 Key Concepts Demonstrated
 
-| Concept | Demonstration | Tool/Algorithm | Emoji |
-|---------|---------------|----------------|-------|
-| One-way hashing | Same input → same output, irreversible | MD5, SHA-256 | 🔢 |
-| Reversible encryption | Encrypt → decrypt = original | Fernet (AES-128-CBC) | 🔓 |
-| Symmetric encryption | Same key for encrypt & decrypt | Fernet | 🔑 |
-| Asymmetric encryption | Public key encrypt, private key decrypt | RSA-2048 (OAEP) | 🔐 |
-| Password security | Salting prevents rainbow tables | bcrypt | 🧂 |
-| Message integrity | Hash + secret key = HMAC | HMAC-SHA256 | 🛡️ |
-| Non-repudiation | Only private key holder can sign | RSA-PSS | 🖊️ |
-| Tamper detection | Modified message fails verification | Digital signatures | 🔍 |
+| Concept | Demonstration | Tool/Algorithm |
+|---------|---------------|----------------|
+| One-way hashing | Same input → same output, irreversible | MD5, SHA-256 🔢 |
+| Reversible encryption | Encrypt → decrypt = original | Fernet (AES-128-CBC) 🔓 |
+| Symmetric encryption | Same key for encrypt & decrypt | Fernet 🔑 |
+| Asymmetric encryption | Public key encrypt, private key decrypt | RSA-2048 (OAEP) 🔐 |
+| Password security | Salting prevents rainbow tables | bcrypt 🧂 |
+| Message integrity | Hash + secret key = HMAC | HMAC-SHA256 🛡️ |
+| Non-repudiation | Only private key holder can sign | RSA-PSS 🖊️ |
+| Tamper detection | Modified message fails verification | Digital signatures 🔍 |
 
 ---
 
