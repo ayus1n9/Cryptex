@@ -3,3 +3,12 @@ __pycache__/
 .env
 venv/
 .venv/
+echo "
+.vscode/
+*.pyo
+hashes.json
+*.enc
+*.dec
+.DS_Store
+Thumbs.db
+" >> .gitignore
