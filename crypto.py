@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import hashlib, hmac
 import bcrypt
 from cryptography.fernet import Fernet
@@ -46,7 +47,7 @@ def demonstrate_asymmetric_encryption(text):
             )
         encrypted_bytes = public_key.encrypt(plain_text, pad)
         return encrypted_bytes
-    
+
     def rsa_decrypt(encrypted_bytes, private_key):
         pad = padding.OAEP(
             mgf = padding.MGF1(
@@ -170,4 +171,86 @@ def batch_hash_folder(folder_path: str) -> dict:
             pass
     with open('hashes.json', 'w') as f:
         json.dump(results, f, indent=2)
+    return results
+
+def benchmark_crypto(iterations: int = 100):
+    """Benchmark all cryptographic operations and return timing results."""
+    fernet_key = Fernet.generate_key()
+    fernet = Fernet(fernet_key)
+    rsa_priv, rsa_pub = generate_rsa_keypair()
+
+    test_msg = "benchmark_test_string"
+    test_bytes = test_msg.encode("utf-8")
+
+    fernet_encrypted = fernet.encrypt(test_bytes)
+    rsa_pad = padding.OAEP(
+        mgf=padding.MGF1(algorithm=hashes.SHA256()),
+        algorithm=hashes.SHA256(),
+        label=None
+    )
+    rsa_encrypted = rsa_pub.encrypt(test_bytes, rsa_pad)
+
+    test_digest = hashlib.sha256(test_bytes).digest()
+    rsa_sig_pad = padding.PSS(
+        mgf=padding.MGF1(hashes.SHA256()),
+        salt_length=padding.PSS.MAX_LENGTH
+    )
+    rsa_signature = rsa_priv.sign(test_digest, rsa_sig_pad, hashes.SHA256())
+
+    results = {}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        hashlib.md5(test_bytes).hexdigest()
+    end = time.perf_counter()
+    results["md5"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        hashlib.sha256(test_bytes).hexdigest()
+    end = time.perf_counter()
+    results["sha256"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        fernet.encrypt(test_bytes)
+    end = time.perf_counter()
+    results["fernet_encrypt"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        fernet.decrypt(fernet_encrypted)
+    end = time.perf_counter()
+    results["fernet_decrypt"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        bcrypt.hashpw(test_bytes, bcrypt.gensalt())
+    end = time.perf_counter()
+    results["bcrypt"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        rsa_pub.encrypt(test_bytes, rsa_pad)
+    end = time.perf_counter()
+    results["rsa_encrypt"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        rsa_priv.decrypt(rsa_encrypted, rsa_pad)
+    end = time.perf_counter()
+    results["rsa_decrypt"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        rsa_priv.sign(test_digest, rsa_sig_pad, hashes.SHA256())
+    end = time.perf_counter()
+    results["rsa_sign"] = {"total": end - start, "per_op": (end - start) / iterations}
+
+    start = time.perf_counter()
+    for _ in range(iterations):
+        rsa_pub.verify(rsa_signature, test_digest, rsa_sig_pad, hashes.SHA256())
+    end = time.perf_counter()
+    results["rsa_verify"] = {"total": end - start, "per_op": (end - start) / iterations}
+
     return results
