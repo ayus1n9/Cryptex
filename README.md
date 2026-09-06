@@ -36,24 +36,24 @@ Built as a progressive, week-long educational project covering hashing, encrypti
 - Verification with correct and incorrect passwords ✅❌
 - Educational comparison: **MD5 vs. bcrypt** for password storage
 
-### 📅 Day 4 — HMAC & Digital Signatures 🖊️
+### HMAC & Digital Signatures 🖊️
 - **HMAC-SHA256** generation and verification with secret keys
 - **Timing-safe comparison** using `hmac.compare_digest()` ⏱️
 - **RSA digital signatures** with PSS padding
 - **Tamper detection**: verify original message vs. modified message 🔍
 
-### 📅 Day 5 — File Operations 📁
+### File Operations 📁
 - **Memory-efficient file hashing** (chunked reading for large files)
 - **File encryption/decryption** using Fernet
 - **Batch folder hashing** with JSON export 📊
 - Handles edge cases: empty files, permission errors, missing files
 
-### 📅 Day 6 — CLI & Performance Benchmarking ⚡
+### CLI & Performance Benchmarking ⚡
 - Full `argparse` interface for non-interactive usage
 - Performance benchmarking: MD5 vs. SHA-256 vs. bcrypt vs. RSA vs. Fernet
 - Timing comparisons across thousands of iterations 🏁
 
-### 📅 Day 7 — GUI & Testing 🖥️🧪
+### GUI & Testing 🖥️🧪
 - **Tkinter GUI** for interactive demonstrations
 - **Comprehensive unit tests** (`unittest`)
 - **GitHub Actions CI/CD** pipeline with automated testing ✅
