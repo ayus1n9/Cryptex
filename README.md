@@ -19,18 +19,18 @@ Built as a progressive, week-long educational project covering hashing, encrypti
 
 ## ✨ Features
 
-### 📅 Day 1 — Hashing & Symmetric Encryption
+### Hashing & Symmetric Encryption
 - Compute **MD5** 🔴 and **SHA-256** 🟢 hashes of any text
 - **Fernet symmetric encryption/decryption** with auto-generated keys
 - Side-by-side comparison showing one-way hashing vs. reversible encryption
 
-### 📅 Day 2 — Asymmetric Encryption (RSA) 🔑
+### Asymmetric Encryption (RSA) 🔑
 - **RSA-2048 key pair** generation
 - Encrypt with **public key** 📢, decrypt with **private key** 🔐
 - **OAEP padding** demonstration (randomized encryption)
 - Direct comparison with symmetric encryption
 
-### 📅 Day 3 — Password Hashing 🧂
+### Password Hashing 🧂
 - **bcrypt** password hashing with automatic salt generation
 - Demonstrates why identical passwords produce **different hashes** 🎲
 - Verification with correct and incorrect passwords ✅❌
