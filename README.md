@@ -78,7 +78,7 @@ Built as a progressive, week-long educational project covering hashing, encrypti
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cryptex.git
+git clone https://github.com/ayus1n9/cryptex.git
 cd cryptex
 
 # Create virtual environment (recommended) 🐍
