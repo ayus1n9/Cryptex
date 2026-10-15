@@ -181,27 +181,6 @@ cryptex/
 
 ---
 
-## 🎓 Learning Outcomes
-
-This project reinforces core concepts from:
-- 📘 **CompTIA Security+ Domain 1** (Cryptographic Concepts)
-- 📗 **CISSP** cryptography fundamentals
-- 💻 General cybersecurity education on secure coding practices
-
----
-
-## 🗺️ Roadmap
-
-- [x] Day 1: Hashing & Symmetric Encryption 🔢
-- [x] Day 2: Asymmetric Encryption (RSA) 🔑
-- [x] Day 3: Password Hashing (bcrypt) 🧂
-- [x] Day 4: HMAC & Digital Signatures 🖊️
-- [x] Day 5: File Operations & Batch Processing 📁
-- [x] Day 6: argparse CLI & Performance Benchmarking ⚡
-- [x] Day 7: Tkinter GUI & Unit Testing 🖥️🧪
-
----
-
 ## 📜 License
 
 This project is for **educational purposes** 🎓.
